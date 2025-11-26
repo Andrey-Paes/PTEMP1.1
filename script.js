@@ -1,9 +1,10 @@
 // Links
 document.getElementById("btnWeb").onclick = () =>
-  (window.location.href = "https://seuappweb.com")
+  (window.location.href = "https://andrey-paes.github.io/Atualizacao/")
 
 document.getElementById("btnApk").onclick = () =>
-  (window.location.href = "/downloads/ptemp.apk")
+  (window.location.href =
+    "https://github.com/Andrey-Paes/Atualizacao/releases/download/V1.1/PTEMP-VersaoFinal.apk")
 
 // Parallax das imagens laterais
 document.addEventListener("mousemove", (e) => {
