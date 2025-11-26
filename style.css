@@ -1,0 +1,181 @@
+/* Fundo gradiente animado */
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(90deg, #282424fc, #1d0c2bff);
+  background-size: 300% 300%;
+  animation: gradientMove 6s ease infinite;
+  overflow: hidden;
+  font-family: "Poppins", sans-serif;
+}
+
+/* PARTÍCULAS */
+#particles {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+/* IMAGEM DE FUNDO GIGANTE COM PARALLAX */
+.bg-img {
+  position: fixed;
+  top: 50%;
+  left: -62%;
+  width: 100%; /* Aumente para 180% ou 200% se quiser maior */
+  height: auto;
+  transform: translate(-50%, -50%);
+  opacity: 0; /* Pode aumentar ou diminuir */
+  pointer-events: none;
+  animation: float 8s ease-in-out infinite;
+  transition: transform 0.15s ease-out;
+  z-index: -10;
+}
+
+/* Efeito flutuante */
+@keyframes float {
+  0% {
+    transform: translateY(-50%) translateX(0);
+  }
+  50% {
+    transform: translateY(-52%) translateX(5px);
+  }
+  100% {
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+/* CAIXA CENTRAL */
+.center-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+/* TÍTULO COM NEON */
+.title {
+  font-size: 4rem;
+  color: #1880ffff;
+  letter-spacing: 5px;
+  text-shadow: 0 0 15px rgba(107, 107, 107, 0.7);
+  animation: slideDown 1.3s ease forwards;
+  opacity: 0;
+}
+
+/* BOTÕES */
+.buttons {
+  margin-top: 35px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.glass-btn {
+  padding: 16px 34px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 18px;
+  border: 1px solid rgba(34, 19, 19, 0.11);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: 0.3s;
+  animation: fadeUp 1.6s ease forwards;
+  opacity: 0;
+  box-shadow: 0 4px 25px rgba(255, 255, 255, 0.05);
+}
+
+.glass-btn:hover {
+  transform: translateY(-5px) scale(1.04);
+  background: rgba(77, 0, 244, 1);
+  box-shadow: 0 8px 100px rgba(10, 154, 249, 0.91);
+}
+
+/* ANIMAÇÕES */
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 900px) {
+  .side-img {
+    width: 100%;
+    opacity: 0.5;
+  }
+
+  .title {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .side-img {
+  }
+
+  .title {
+    font-size: 2.6rem;
+  }
+}
+/* PARTÍCULAS */
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  animation: twinkle linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes twinkle {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+}
+@media (max-width: 20px) {
+  .bg-img {
+    width: 200%; /* deixa ainda maior no celular */
+    opacity: 0.25;
+  }
+}
