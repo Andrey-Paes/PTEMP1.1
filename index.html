@@ -1,26 +1,89 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PTEMP</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>PTEMP • Downloads</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- PARTÍCULAS -->
-    <div id="particles"></div>
+    <main class="container" id="container">
+      <!-- imagem ao lado (parallax) -->
+      <div class="image-box" id="imageBox" aria-hidden="true">
+        <img src="Img/Group 158.png" alt="Mockup PTEMP" id="mockupImg" />
+      </div>
 
-    <img src="Img/Black.png" class="bg-img" alt="Background" />
-    <!-- CONTEÚDO CENTRAL -->
-    <main class="center-box">
-      <h1 class="title">PTEMP</h1>
+      <!-- botões no centro -->
+      <div class="buttons-box">
+        <h1>PTEMP V1.1</h1>
 
-      <div class="buttons">
-        <button id="btnWeb" class="glass-btn">Acessar App Web</button>
-        <button id="btnApk" class="glass-btn">Baixar APK</button>
+        <a
+          class="btn glass"
+          href="https://github.com/Andrey-Paes/Atualizacao/releases/download/V1.1/PTEMP-VersaoFinal.apk"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Baixar APK PTEMP"
+        >
+          📱 Baixar APK
+        </a>
+
+        <a
+          class="btn glass"
+          href="https://andrey-paes.github.io/Atualizacao/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Abrir versão web PTEMP"
+        >
+          🌐 Versão Web
+        </a>
+
+        <p class="hint">Toque nos botões para abrir os links de download.</p>
       </div>
     </main>
 
-    <script src="script.js"></script>
+    <script>
+      // Parallax simples: move a imagem baseado no mouse (desktop) e toque (mobile)
+      ;(function () {
+        const container = document.getElementById("container")
+        const img = document.getElementById("mockupImg")
+
+        // não rodar se elemento não existir
+        if (!container || !img) return
+
+        // efeito leve no mousemove
+        container.addEventListener("mousemove", (e) => {
+          const rect = container.getBoundingClientRect()
+          const x = (e.clientX - rect.left) / rect.width // 0..1
+          const y = (e.clientY - rect.top) / rect.height // 0..1
+          const tx = (x - 0.5) * 12 // -6 .. 6
+          const ty = (y - 0.5) * 10 // -5 .. 5
+          img.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(1.02)`
+        })
+
+        // volta ao normal ao sair
+        container.addEventListener("mouseleave", () => {
+          img.style.transform = ""
+        })
+
+        // para mobile: toque simples (ao tocar dá leve movimento)
+        ;["touchstart", "touchmove"].forEach((evt) => {
+          container.addEventListener(evt, (e) => {
+            if (!e.touches || !e.touches[0]) return
+            const touch = e.touches[0]
+            const rect = container.getBoundingClientRect()
+            const x = (touch.clientX - rect.left) / rect.width
+            const y = (touch.clientY - rect.top) / rect.height
+            const tx = (x - 0.5) * 10
+            const ty = (y - 0.5) * 8
+            img.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(1.02)`
+          })
+        })
+
+        // fallback: remove transform on touchend
+        container.addEventListener("touchend", () => {
+          img.style.transform = ""
+        })
+      })()
+    </script>
   </body>
 </html>

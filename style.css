@@ -1,181 +1,243 @@
-/* Fundo gradiente animado */
-body {
-  margin: 0;
-  height: 100vh;
-  background: linear-gradient(90deg, #282424fc, #1d0c2bff);
-  background-size: 300% 300%;
-  animation: gradientMove 6s ease infinite;
-  overflow: hidden;
-  font-family: "Poppins", sans-serif;
+/* ---------- VARS ---------- */
+:root {
+  --g1: #6f00ff; /* roxo */
+  --g2: #3b0070; /* roxo escuro */
+  --g3: #000000; /* preto */
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --text: #f2ecff;
+  --muted: rgba(242, 236, 255, 0.72);
 }
 
-/* PARTÍCULAS */
-#particles {
+/* reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  height: 100%;
+}
+
+/* --------- fundo gradiente animado --------- */
+/* usamos um pseudo-elemento para garantir compatibilidade em mobile */
+body {
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial,
+    sans-serif;
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #000; /* fallback */
+  overflow-x: hidden;
+}
+
+/* overlay de gradiente animado que cobre a tela */
+body::before {
+  content: "";
   position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(
+    120deg,
+    var(--g1),
+    var(--g2),
+    var(--g3),
+    var(--g2)
+  );
+  background-size: 240% 240%;
+  filter: saturate(110%);
+  animation: gradientShift 8s linear infinite;
+}
+
+/* suaviza no modo que o usuário prefere menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+    background-size: 100% 100%;
+  }
+}
+
+/* animação do gradiente (funciona em mobile e desktop) */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* --------- container central (imagem + botões) --------- */
+.container {
+  width: 100%;
+  max-width: 980px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+  padding: 28px;
+  border-radius: 18px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.02),
+    rgba(0, 0, 0, 0.18)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px) saturate(110%);
+  -webkit-backdrop-filter: blur(8px) saturate(110%);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  position: relative;
+  z-index: 1;
+}
+
+/* imagem com parallax leve */
+.image-box {
+  flex: 0 0 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.image-box img {
   width: 100%;
   height: 100%;
-  pointer-events: none;
-  overflow: hidden;
-}
-/* IMAGEM DE FUNDO GIGANTE COM PARALLAX */
-.bg-img {
-  position: fixed;
-  top: 50%;
-  left: -62%;
-  width: 100%; /* Aumente para 180% ou 200% se quiser maior */
-  height: auto;
-  transform: translate(-50%, -50%);
-  opacity: 0; /* Pode aumentar ou diminuir */
-  pointer-events: none;
-  animation: float 8s ease-in-out infinite;
-  transition: transform 0.15s ease-out;
-  z-index: -10;
+  transition: transform 300ms cubic-bezier(0.2, 0.9, 0.2, 1);
+  will-change: transform;
+  display: block;
+  object-fit: cover;
 }
 
-/* Efeito flutuante */
-@keyframes float {
-  0% {
-    transform: translateY(-50%) translateX(0);
-  }
-  50% {
-    transform: translateY(-52%) translateX(5px);
-  }
-  100% {
-    transform: translateY(-50%) translateX(0);
-  }
-}
-
-/* CAIXA CENTRAL */
-.center-box {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-/* TÍTULO COM NEON */
-.title {
-  font-size: 4rem;
-  color: #1880ffff;
-  letter-spacing: 5px;
-  text-shadow: 0 0 15px rgba(107, 107, 107, 0.7);
-  animation: slideDown 1.3s ease forwards;
-  opacity: 0;
-}
-
-/* BOTÕES */
-.buttons {
-  margin-top: 35px;
+/* área dos botões */
+.buttons-box {
+  min-width: 360px;
+  max-width: 420px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+}
+.buttons-box h1 {
+  font-size: 24px;
+  letter-spacing: 0.2px;
+  margin-bottom: 4px;
+}
+.hint {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 6px;
 }
 
-.glass-btn {
-  padding: 16px 34px;
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 18px;
-  border: 1px solid rgba(34, 19, 19, 0.11);
-  backdrop-filter: blur(10px);
-  color: #fff;
-  font-size: 1.25rem;
-  cursor: pointer;
-  transition: 0.3s;
-  animation: fadeUp 1.6s ease forwards;
-  opacity: 0;
-  box-shadow: 0 4px 25px rgba(255, 255, 255, 0.05);
+/* ---------- Botões Glassmorphism ---------- */
+.btn {
+  display: inline-block;
+  width: 260px;
+  max-width: 100%;
+  padding: 14px 18px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  transition: transform 0.18s ease, box-shadow 0.18s ease,
+    backdrop-filter 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.glass-btn:hover {
-  transform: translateY(-5px) scale(1.04);
-  background: rgba(77, 0, 244, 1);
-  box-shadow: 0 8px 100px rgba(10, 154, 249, 0.91);
+/* estilo glass */
+.btn.glass {
+  background: rgba(255, 255, 255, 0.04); /* leve translúcido */
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px) saturate(120%);
 }
 
-/* ANIMAÇÕES */
-@keyframes gradientMove {
-  0% {
-    background-position: 0% 0%;
-  }
-  50% {
-    background-position: 100% 100%;
-  }
-  100% {
-    background-position: 0% 0%;
-  }
+/* efeito hover/press */
+.btn.glass:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+.btn.glass:active {
+  transform: translateY(-2px) scale(0.998);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6);
 }
 
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* variante levemente diferenciada (ex: 2º botão) */
+.btn.glass + .btn.glass {
+  margin-top: 6px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.03),
+    rgba(0, 0, 0, 0.06)
+  );
+  border-color: rgba(181, 95, 255, 0.12);
 }
 
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(25px);
+/* responsividade - mobile: imagem fica em cima e botões ocupam largura */
+@media (max-width: 780px) {
+  .container {
+    flex-direction: column-reverse;
+    gap: 18px;
+    padding: 18px;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-/* RESPONSIVIDADE */
-@media (max-width: 900px) {
-  .side-img {
+  .image-box {
+    order: 0;
     width: 100%;
-    opacity: 0.5;
+    display: flex;
+    justify-content: center;
+  }
+  .image-box img {
+    max-width: 460px;
   }
 
-  .title {
-    font-size: 3rem;
+  .buttons-box {
+    order: 1;
+    width: 100%;
+    padding: 0 12px;
+  }
+  .btn {
+    width: 100%;
+    max-width: 520px;
   }
 }
 
-@media (max-width: 600px) {
-  .side-img {
+/* ajustes para telas pequenas */
+@media (max-width: 420px) {
+  .container {
+    padding: 14px;
+    border-radius: 12px;
+    gap: 12px;
   }
+  .image-box img {
+    max-width: 410px;
+    border-radius: 12px;
+  }
+  .buttons-box h1 {
+    font-size: 20px;
+  }
+  .btn {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+}
 
-  .title {
-    font-size: 2.6rem;
+/* reduz movimento se a preferência do usuário pedir */
+@media (prefers-reduced-motion: reduce) {
+  .image-box img,
+  .btn {
+    transition: none;
   }
-}
-/* PARTÍCULAS */
-.particle {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 50%;
-  animation: twinkle linear infinite;
-  opacity: 0.8;
-}
-
-@keyframes twinkle {
-  0% {
-    transform: scale(0.6);
-    opacity: 0.4;
-  }
-  50% {
-    transform: scale(1.4);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(0.6);
-    opacity: 0.4;
-  }
-}
-@media (max-width: 20px) {
-  .bg-img {
-    width: 200%; /* deixa ainda maior no celular */
-    opacity: 0.25;
+  body::before {
+    animation: none;
   }
 }
